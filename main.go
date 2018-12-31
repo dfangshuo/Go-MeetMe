@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/dfangshuo/mmModels"
 	"github.com/gorilla/mux"
 	"log"       // log errors and stuff
 	"math/rand" // specific to tutorial: generate random num
@@ -9,23 +10,8 @@ import (
 	"strconv"   // str converter
 )
 
-// MODELS
-// Book Struct
-type Book struct {
-	Id     string  `json:"id"`
-	Isbn   string  `json:"isbn"`
-	Title  string  `json:"title"`
-	Author *Author `json:"author"`
-}
-
-// Author Struct
-type Author struct {
-	Firstname string `json:"firstname"`
-	Lastname  string `json:"lastname"`
-}
-
 // Init books var as a slice Book struct
-var books []Book
+var books []mmModels.Book
 
 // get all books
 func getBooks(w http.ResponseWriter, r *http.Request) {
@@ -58,14 +44,14 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// empty book for book not found
-	json.NewEncoder(w).Encode(&Book{Title: "ERROR: book not found!"})
+	json.NewEncoder(w).Encode(&mmModels.Book{Title: "ERROR: book not found!"})
 
 }
 
 // create a new book
 func createBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var newBook Book
+	var newBook mmModels.Book
 
 	/*
 		NewDecoder creates a NewDecoder that READS from the source (r.Body, in this case)
@@ -88,7 +74,7 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 	for i, book := range books {
 		if book.Id == params["id"] {
 			books = append(books[:i], books[i+1:]...)
-			var newBook Book
+			var newBook mmModels.Book
 			_ = json.NewDecoder(r.Body).Decode(&newBook)
 			newBook.Id = params["id"]
 			books = append(books, newBook)
@@ -120,21 +106,21 @@ func main() {
 
 	// Mock Data
 	// TODO: implement database
-	books = append(books, Book{
+	books = append(books, mmModels.Book{
 		Id:    "1",
 		Isbn:  "94704",
 		Title: "Book One",
-		Author: &Author{
+		Author: &mmModels.Author{
 			Firstname: "John",
 			Lastname:  "W",
 		},
 	})
 
-	books = append(books, Book{
+	books = append(books, mmModels.Book{
 		Id:    "2",
 		Isbn:  "21421",
 		Title: "Book Two",
-		Author: &Author{
+		Author: &mmModels.Author{
 			Firstname: "Steve",
 			Lastname:  "Smith",
 		},
