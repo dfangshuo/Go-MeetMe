@@ -1,5 +1,5 @@
 # 'Go'-ing forth
 *by Fang*
 
-A central repository for my projects and mini-projects written in Go
+A RESTful API backend for MeetMe, written in Go.
 
