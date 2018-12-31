@@ -1,5 +1,5 @@
 # 'Go'-ing forth
-*by Alvin, Cong, Fang, Vivian, Ying Hang*
+*by Fang*
 
 A central repository for my projects and mini-projects written in Go
 
