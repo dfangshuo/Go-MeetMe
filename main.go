@@ -68,7 +68,14 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(newUser)
+}
 
+func deleteUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+	if err := userRef.Child(id).Delete(ctx); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }
 
 // // update book
@@ -126,7 +133,7 @@ func main() {
 	router.HandleFunc("/api/users/{id}", getOneUser).Methods("GET")
 	router.HandleFunc("/api/users", createUser).Methods("POST")
 	// r.HandleFunc("/api/books/{id}", updateBook).Methods("PUT")
-	// r.HandleFunc("/api/books/{id}", deleteBook).Methods("DELETE")
+	router.HandleFunc("/api/users/{id}", deleteUser).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(port, router))
 }
